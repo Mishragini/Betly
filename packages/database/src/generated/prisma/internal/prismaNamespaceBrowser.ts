@@ -53,7 +53,10 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   InrBalance: 'InrBalance',
-  Balance: 'Balance'
+  Order: 'Order',
+  Category: 'Category',
+  Market: 'Market',
+  StockBalance: 'StockBalance'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -75,7 +78,8 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  password: 'password'
+  password: 'password',
+  role: 'role'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -85,18 +89,59 @@ export const InrBalanceScalarFieldEnum = {
   id: 'id',
   locked: 'locked',
   available: 'available',
-  balanceId: 'balanceId'
+  userId: 'userId'
 } as const
 
 export type InrBalanceScalarFieldEnum = (typeof InrBalanceScalarFieldEnum)[keyof typeof InrBalanceScalarFieldEnum]
 
 
-export const BalanceScalarFieldEnum = {
+export const OrderScalarFieldEnum = {
   id: 'id',
-  userId: 'userId'
+  side: 'side',
+  type: 'type',
+  price: 'price',
+  quantity: 'quantity',
+  filled: 'filled',
+  userId: 'userId',
+  marketId: 'marketId'
 } as const
 
-export type BalanceScalarFieldEnum = (typeof BalanceScalarFieldEnum)[keyof typeof BalanceScalarFieldEnum]
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+export const CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  imageUrl: 'imageUrl'
+} as const
+
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const MarketScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  sourceOfTruth: 'sourceOfTruth',
+  endDateTime: 'endDateTime',
+  imageUrl: 'imageUrl',
+  createdById: 'createdById',
+  categoryId: 'categoryId'
+} as const
+
+export type MarketScalarFieldEnum = (typeof MarketScalarFieldEnum)[keyof typeof MarketScalarFieldEnum]
+
+
+export const StockBalanceScalarFieldEnum = {
+  id: 'id',
+  side: 'side',
+  available: 'available',
+  locked: 'locked',
+  userId: 'userId',
+  marketId: 'marketId'
+} as const
+
+export type StockBalanceScalarFieldEnum = (typeof StockBalanceScalarFieldEnum)[keyof typeof StockBalanceScalarFieldEnum]
 
 
 export const SortOrder = {

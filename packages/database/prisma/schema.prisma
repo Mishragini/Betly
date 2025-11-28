@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Prisma Schema
 
 generator client {
   provider = "prisma-client"
@@ -13,24 +9,83 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Side {
+  yes
+  no
+}
+
+enum Role {
+  user
+  admin
+}
+
+enum OrderType {
+  buy
+  sell
+}
+
 model User {
-  id       String @id @default(uuid())
-  email    String @unique
-  password String
-  balance   Balance?
+  id            String          @id @default(uuid())
+  email         String          @unique
+  password      String
+  role          Role
+  inrBalance    InrBalance?
+  stockBalances StockBalance[]
+  markets       Market[]
+  orders        Order[]
 }
 
 model InrBalance {
   id        String @id @default(uuid())
-  locked    Int
+  locked    Int    @default(0)
   available Int
-  balance    Balance @relation(fields: [balanceId], references: [id])
-  balanceId String @unique
+  userId    String @unique
+  user      User   @relation(fields: [userId], references: [id])
 }
 
-model Balance {
-  id           String     @id @default(uuid())
-  inrBalance InrBalance?
-  userId String @unique
-  user User @relation(fields: [userId],references: [id])
+model Order {
+  id        String    @id @default(uuid())
+  side      Side
+  type      OrderType
+  price     Int
+  quantity  Int
+  filled    Int
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  marketId  String
+  market    Market    @relation(fields: [marketId], references: [id])
+}
+
+model Category {
+  id       String   @id @default(uuid())
+  name     String   @unique
+  imageUrl String
+  markets  Market[]
+}
+
+model Market {
+  id             String         @id @default(uuid())
+  title          String
+  description    String
+  sourceOfTruth  String
+  endDateTime    DateTime
+  imageUrl       String
+  createdById    String
+  createdBy      User           @relation(fields: [createdById], references: [id])
+  categoryId     String
+  category       Category       @relation(fields: [categoryId], references: [id])
+  orders         Order[]
+  stockBalances  StockBalance[]
+}
+
+model StockBalance {
+  id        String  @id @default(uuid())
+  side      Side
+  available Int
+  locked    Int     @default(0)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  marketId  String 
+  market    Market  @relation(fields: [marketId], references: [id])
+  @@unique([userId,side,marketId])
 }

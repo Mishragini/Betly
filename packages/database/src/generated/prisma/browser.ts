@@ -28,7 +28,22 @@ export type User = Prisma.UserModel
  */
 export type InrBalance = Prisma.InrBalanceModel
 /**
- * Model Balance
+ * Model Order
  * 
  */
-export type Balance = Prisma.BalanceModel
+export type Order = Prisma.OrderModel
+/**
+ * Model Category
+ * 
+ */
+export type Category = Prisma.CategoryModel
+/**
+ * Model Market
+ * 
+ */
+export type Market = Prisma.MarketModel
+/**
+ * Model StockBalance
+ * 
+ */
+export type StockBalance = Prisma.StockBalanceModel

@@ -40,21 +40,21 @@ export type InrBalanceMinAggregateOutputType = {
   id: string | null
   locked: number | null
   available: number | null
-  balanceId: string | null
+  userId: string | null
 }
 
 export type InrBalanceMaxAggregateOutputType = {
   id: string | null
   locked: number | null
   available: number | null
-  balanceId: string | null
+  userId: string | null
 }
 
 export type InrBalanceCountAggregateOutputType = {
   id: number
   locked: number
   available: number
-  balanceId: number
+  userId: number
   _all: number
 }
 
@@ -73,21 +73,21 @@ export type InrBalanceMinAggregateInputType = {
   id?: true
   locked?: true
   available?: true
-  balanceId?: true
+  userId?: true
 }
 
 export type InrBalanceMaxAggregateInputType = {
   id?: true
   locked?: true
   available?: true
-  balanceId?: true
+  userId?: true
 }
 
 export type InrBalanceCountAggregateInputType = {
   id?: true
   locked?: true
   available?: true
-  balanceId?: true
+  userId?: true
   _all?: true
 }
 
@@ -181,7 +181,7 @@ export type InrBalanceGroupByOutputType = {
   id: string
   locked: number
   available: number
-  balanceId: string
+  userId: string
   _count: InrBalanceCountAggregateOutputType | null
   _avg: InrBalanceAvgAggregateOutputType | null
   _sum: InrBalanceSumAggregateOutputType | null
@@ -211,34 +211,34 @@ export type InrBalanceWhereInput = {
   id?: Prisma.StringFilter<"InrBalance"> | string
   locked?: Prisma.IntFilter<"InrBalance"> | number
   available?: Prisma.IntFilter<"InrBalance"> | number
-  balanceId?: Prisma.StringFilter<"InrBalance"> | string
-  balance?: Prisma.XOR<Prisma.BalanceScalarRelationFilter, Prisma.BalanceWhereInput>
+  userId?: Prisma.StringFilter<"InrBalance"> | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type InrBalanceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   locked?: Prisma.SortOrder
   available?: Prisma.SortOrder
-  balanceId?: Prisma.SortOrder
-  balance?: Prisma.BalanceOrderByWithRelationInput
+  userId?: Prisma.SortOrder
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type InrBalanceWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  balanceId?: string
+  userId?: string
   AND?: Prisma.InrBalanceWhereInput | Prisma.InrBalanceWhereInput[]
   OR?: Prisma.InrBalanceWhereInput[]
   NOT?: Prisma.InrBalanceWhereInput | Prisma.InrBalanceWhereInput[]
   locked?: Prisma.IntFilter<"InrBalance"> | number
   available?: Prisma.IntFilter<"InrBalance"> | number
-  balance?: Prisma.XOR<Prisma.BalanceScalarRelationFilter, Prisma.BalanceWhereInput>
-}, "id" | "balanceId">
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+}, "id" | "userId">
 
 export type InrBalanceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   locked?: Prisma.SortOrder
   available?: Prisma.SortOrder
-  balanceId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   _count?: Prisma.InrBalanceCountOrderByAggregateInput
   _avg?: Prisma.InrBalanceAvgOrderByAggregateInput
   _max?: Prisma.InrBalanceMaxOrderByAggregateInput
@@ -253,42 +253,42 @@ export type InrBalanceScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"InrBalance"> | string
   locked?: Prisma.IntWithAggregatesFilter<"InrBalance"> | number
   available?: Prisma.IntWithAggregatesFilter<"InrBalance"> | number
-  balanceId?: Prisma.StringWithAggregatesFilter<"InrBalance"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"InrBalance"> | string
 }
 
 export type InrBalanceCreateInput = {
   id?: string
-  locked: number
+  locked?: number
   available: number
-  balance: Prisma.BalanceCreateNestedOneWithoutInrBalanceInput
+  user: Prisma.UserCreateNestedOneWithoutInrBalanceInput
 }
 
 export type InrBalanceUncheckedCreateInput = {
   id?: string
-  locked: number
+  locked?: number
   available: number
-  balanceId: string
+  userId: string
 }
 
 export type InrBalanceUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   locked?: Prisma.IntFieldUpdateOperationsInput | number
   available?: Prisma.IntFieldUpdateOperationsInput | number
-  balance?: Prisma.BalanceUpdateOneRequiredWithoutInrBalanceNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutInrBalanceNestedInput
 }
 
 export type InrBalanceUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   locked?: Prisma.IntFieldUpdateOperationsInput | number
   available?: Prisma.IntFieldUpdateOperationsInput | number
-  balanceId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type InrBalanceCreateManyInput = {
   id?: string
-  locked: number
+  locked?: number
   available: number
-  balanceId: string
+  userId: string
 }
 
 export type InrBalanceUpdateManyMutationInput = {
@@ -301,14 +301,19 @@ export type InrBalanceUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   locked?: Prisma.IntFieldUpdateOperationsInput | number
   available?: Prisma.IntFieldUpdateOperationsInput | number
-  balanceId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type InrBalanceNullableScalarRelationFilter = {
+  is?: Prisma.InrBalanceWhereInput | null
+  isNot?: Prisma.InrBalanceWhereInput | null
 }
 
 export type InrBalanceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   locked?: Prisma.SortOrder
   available?: Prisma.SortOrder
-  balanceId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type InrBalanceAvgOrderByAggregateInput = {
@@ -320,14 +325,14 @@ export type InrBalanceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   locked?: Prisma.SortOrder
   available?: Prisma.SortOrder
-  balanceId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type InrBalanceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   locked?: Prisma.SortOrder
   available?: Prisma.SortOrder
-  balanceId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type InrBalanceSumOrderByAggregateInput = {
@@ -335,9 +340,36 @@ export type InrBalanceSumOrderByAggregateInput = {
   available?: Prisma.SortOrder
 }
 
-export type InrBalanceNullableScalarRelationFilter = {
-  is?: Prisma.InrBalanceWhereInput | null
-  isNot?: Prisma.InrBalanceWhereInput | null
+export type InrBalanceCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.InrBalanceCreateWithoutUserInput, Prisma.InrBalanceUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.InrBalanceCreateOrConnectWithoutUserInput
+  connect?: Prisma.InrBalanceWhereUniqueInput
+}
+
+export type InrBalanceUncheckedCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.InrBalanceCreateWithoutUserInput, Prisma.InrBalanceUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.InrBalanceCreateOrConnectWithoutUserInput
+  connect?: Prisma.InrBalanceWhereUniqueInput
+}
+
+export type InrBalanceUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.InrBalanceCreateWithoutUserInput, Prisma.InrBalanceUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.InrBalanceCreateOrConnectWithoutUserInput
+  upsert?: Prisma.InrBalanceUpsertWithoutUserInput
+  disconnect?: Prisma.InrBalanceWhereInput | boolean
+  delete?: Prisma.InrBalanceWhereInput | boolean
+  connect?: Prisma.InrBalanceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InrBalanceUpdateToOneWithWhereWithoutUserInput, Prisma.InrBalanceUpdateWithoutUserInput>, Prisma.InrBalanceUncheckedUpdateWithoutUserInput>
+}
+
+export type InrBalanceUncheckedUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.InrBalanceCreateWithoutUserInput, Prisma.InrBalanceUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.InrBalanceCreateOrConnectWithoutUserInput
+  upsert?: Prisma.InrBalanceUpsertWithoutUserInput
+  disconnect?: Prisma.InrBalanceWhereInput | boolean
+  delete?: Prisma.InrBalanceWhereInput | boolean
+  connect?: Prisma.InrBalanceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InrBalanceUpdateToOneWithWhereWithoutUserInput, Prisma.InrBalanceUpdateWithoutUserInput>, Prisma.InrBalanceUncheckedUpdateWithoutUserInput>
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -348,73 +380,41 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type InrBalanceCreateNestedOneWithoutBalanceInput = {
-  create?: Prisma.XOR<Prisma.InrBalanceCreateWithoutBalanceInput, Prisma.InrBalanceUncheckedCreateWithoutBalanceInput>
-  connectOrCreate?: Prisma.InrBalanceCreateOrConnectWithoutBalanceInput
-  connect?: Prisma.InrBalanceWhereUniqueInput
-}
-
-export type InrBalanceUncheckedCreateNestedOneWithoutBalanceInput = {
-  create?: Prisma.XOR<Prisma.InrBalanceCreateWithoutBalanceInput, Prisma.InrBalanceUncheckedCreateWithoutBalanceInput>
-  connectOrCreate?: Prisma.InrBalanceCreateOrConnectWithoutBalanceInput
-  connect?: Prisma.InrBalanceWhereUniqueInput
-}
-
-export type InrBalanceUpdateOneWithoutBalanceNestedInput = {
-  create?: Prisma.XOR<Prisma.InrBalanceCreateWithoutBalanceInput, Prisma.InrBalanceUncheckedCreateWithoutBalanceInput>
-  connectOrCreate?: Prisma.InrBalanceCreateOrConnectWithoutBalanceInput
-  upsert?: Prisma.InrBalanceUpsertWithoutBalanceInput
-  disconnect?: Prisma.InrBalanceWhereInput | boolean
-  delete?: Prisma.InrBalanceWhereInput | boolean
-  connect?: Prisma.InrBalanceWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.InrBalanceUpdateToOneWithWhereWithoutBalanceInput, Prisma.InrBalanceUpdateWithoutBalanceInput>, Prisma.InrBalanceUncheckedUpdateWithoutBalanceInput>
-}
-
-export type InrBalanceUncheckedUpdateOneWithoutBalanceNestedInput = {
-  create?: Prisma.XOR<Prisma.InrBalanceCreateWithoutBalanceInput, Prisma.InrBalanceUncheckedCreateWithoutBalanceInput>
-  connectOrCreate?: Prisma.InrBalanceCreateOrConnectWithoutBalanceInput
-  upsert?: Prisma.InrBalanceUpsertWithoutBalanceInput
-  disconnect?: Prisma.InrBalanceWhereInput | boolean
-  delete?: Prisma.InrBalanceWhereInput | boolean
-  connect?: Prisma.InrBalanceWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.InrBalanceUpdateToOneWithWhereWithoutBalanceInput, Prisma.InrBalanceUpdateWithoutBalanceInput>, Prisma.InrBalanceUncheckedUpdateWithoutBalanceInput>
-}
-
-export type InrBalanceCreateWithoutBalanceInput = {
+export type InrBalanceCreateWithoutUserInput = {
   id?: string
-  locked: number
+  locked?: number
   available: number
 }
 
-export type InrBalanceUncheckedCreateWithoutBalanceInput = {
+export type InrBalanceUncheckedCreateWithoutUserInput = {
   id?: string
-  locked: number
+  locked?: number
   available: number
 }
 
-export type InrBalanceCreateOrConnectWithoutBalanceInput = {
+export type InrBalanceCreateOrConnectWithoutUserInput = {
   where: Prisma.InrBalanceWhereUniqueInput
-  create: Prisma.XOR<Prisma.InrBalanceCreateWithoutBalanceInput, Prisma.InrBalanceUncheckedCreateWithoutBalanceInput>
+  create: Prisma.XOR<Prisma.InrBalanceCreateWithoutUserInput, Prisma.InrBalanceUncheckedCreateWithoutUserInput>
 }
 
-export type InrBalanceUpsertWithoutBalanceInput = {
-  update: Prisma.XOR<Prisma.InrBalanceUpdateWithoutBalanceInput, Prisma.InrBalanceUncheckedUpdateWithoutBalanceInput>
-  create: Prisma.XOR<Prisma.InrBalanceCreateWithoutBalanceInput, Prisma.InrBalanceUncheckedCreateWithoutBalanceInput>
+export type InrBalanceUpsertWithoutUserInput = {
+  update: Prisma.XOR<Prisma.InrBalanceUpdateWithoutUserInput, Prisma.InrBalanceUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.InrBalanceCreateWithoutUserInput, Prisma.InrBalanceUncheckedCreateWithoutUserInput>
   where?: Prisma.InrBalanceWhereInput
 }
 
-export type InrBalanceUpdateToOneWithWhereWithoutBalanceInput = {
+export type InrBalanceUpdateToOneWithWhereWithoutUserInput = {
   where?: Prisma.InrBalanceWhereInput
-  data: Prisma.XOR<Prisma.InrBalanceUpdateWithoutBalanceInput, Prisma.InrBalanceUncheckedUpdateWithoutBalanceInput>
+  data: Prisma.XOR<Prisma.InrBalanceUpdateWithoutUserInput, Prisma.InrBalanceUncheckedUpdateWithoutUserInput>
 }
 
-export type InrBalanceUpdateWithoutBalanceInput = {
+export type InrBalanceUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   locked?: Prisma.IntFieldUpdateOperationsInput | number
   available?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
-export type InrBalanceUncheckedUpdateWithoutBalanceInput = {
+export type InrBalanceUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   locked?: Prisma.IntFieldUpdateOperationsInput | number
   available?: Prisma.IntFieldUpdateOperationsInput | number
@@ -426,54 +426,54 @@ export type InrBalanceSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   id?: boolean
   locked?: boolean
   available?: boolean
-  balanceId?: boolean
-  balance?: boolean | Prisma.BalanceDefaultArgs<ExtArgs>
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["inrBalance"]>
 
 export type InrBalanceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   locked?: boolean
   available?: boolean
-  balanceId?: boolean
-  balance?: boolean | Prisma.BalanceDefaultArgs<ExtArgs>
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["inrBalance"]>
 
 export type InrBalanceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   locked?: boolean
   available?: boolean
-  balanceId?: boolean
-  balance?: boolean | Prisma.BalanceDefaultArgs<ExtArgs>
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["inrBalance"]>
 
 export type InrBalanceSelectScalar = {
   id?: boolean
   locked?: boolean
   available?: boolean
-  balanceId?: boolean
+  userId?: boolean
 }
 
-export type InrBalanceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "locked" | "available" | "balanceId", ExtArgs["result"]["inrBalance"]>
+export type InrBalanceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "locked" | "available" | "userId", ExtArgs["result"]["inrBalance"]>
 export type InrBalanceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  balance?: boolean | Prisma.BalanceDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type InrBalanceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  balance?: boolean | Prisma.BalanceDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type InrBalanceIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  balance?: boolean | Prisma.BalanceDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $InrBalancePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "InrBalance"
   objects: {
-    balance: Prisma.$BalancePayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     locked: number
     available: number
-    balanceId: string
+    userId: string
   }, ExtArgs["result"]["inrBalance"]>
   composites: {}
 }
@@ -868,7 +868,7 @@ readonly fields: InrBalanceFieldRefs;
  */
 export interface Prisma__InrBalanceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  balance<T extends Prisma.BalanceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.BalanceDefaultArgs<ExtArgs>>): Prisma.Prisma__BalanceClient<runtime.Types.Result.GetResult<Prisma.$BalancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -901,7 +901,7 @@ export interface InrBalanceFieldRefs {
   readonly id: Prisma.FieldRef<"InrBalance", 'String'>
   readonly locked: Prisma.FieldRef<"InrBalance", 'Int'>
   readonly available: Prisma.FieldRef<"InrBalance", 'Int'>
-  readonly balanceId: Prisma.FieldRef<"InrBalance", 'String'>
+  readonly userId: Prisma.FieldRef<"InrBalance", 'String'>
 }
     
 

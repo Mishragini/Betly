@@ -1,16 +1,18 @@
 import { Router } from "express";
-import { authSchema } from "../utils/validation";
+import { onrampSchema, signInSchema, signUpSchema } from "../utils/validation";
 import { getErrorMessage, handleRes } from "../utils/responseHandler";
 import { prisma } from "@repo/db"
 import * as bcrypt from "bcrypt"
-import jwt, { JwtPayload } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import { JWT_SECRET, NODE_ENV } from "../utils/config";
+import { authMiddleWare } from "../utils/middleware";
+import { authenticatedReq, User } from "../utils/type";
 
 const userRouter: Router = Router()
 
 userRouter.post("/signup", async (req, res) => {
     try {
-        const { success, data, error } = authSchema.safeParse(req.body)
+        const { success, data, error } = signUpSchema.safeParse(req.body)
         if (error) {
             const errors = error.issues.map(err => ({
                 message: err.message,
@@ -19,7 +21,7 @@ userRouter.post("/signup", async (req, res) => {
             await handleRes(res, 400, {}, errors);
             return;
         }
-        const { email, password } = data
+        const { email, password, role } = data
 
         const existingUser = await prisma.user.findFirst({
             where: {
@@ -36,7 +38,8 @@ userRouter.post("/signup", async (req, res) => {
         const user = await prisma.user.create({
             data: {
                 email: email,
-                password: hashedPassword
+                password: hashedPassword,
+                role
             }
         })
 
@@ -50,7 +53,7 @@ userRouter.post("/signup", async (req, res) => {
             }
         )
 
-        await handleRes(res, 200, user)
+        await handleRes(res, 200, { message: "User created successfully!", user })
     } catch (error) {
         const errorMessage = getErrorMessage(error)
         await handleRes(res, 500, {}, [{ message: errorMessage }])
@@ -59,7 +62,7 @@ userRouter.post("/signup", async (req, res) => {
 
 userRouter.post("/signin", async (req, res) => {
     try {
-        const { error, data } = authSchema.safeParse(req.body)
+        const { error, data } = signInSchema.safeParse(req.body)
         if (error) {
             const errors = error.issues.map((err) => {
                 return {
@@ -105,7 +108,7 @@ userRouter.post("/signin", async (req, res) => {
         })
 
 
-        await handleRes(res, 200, { authToken })
+        await handleRes(res, 200, { message: "Signed in successfully!", authToken })
 
 
     } catch (error) {
@@ -115,36 +118,44 @@ userRouter.post("/signin", async (req, res) => {
 })
 
 
-userRouter.get("/me", async (req, res) => {
+userRouter.get("/me", authMiddleWare, async (req: authenticatedReq, res) => {
     try {
-        const authToken = req.cookies.authToken;
+        const user = req.user
 
-        console.log("authToken", authToken)
+        await handleRes(res, 200, { messge: "User fetched successfully!", user })
 
-        if (!authToken) {
-            const error = {
-                message: "Auth token cookie not found. Please sign in"
-            }
-            await handleRes(res, 400, {}, [error])
+    } catch (error) {
+        const errorMessage = getErrorMessage(error)
+        await handleRes(res, 500, {}, [{ message: errorMessage }])
+    }
+})
+
+
+userRouter.post("/onramp/inr", authMiddleWare, async (req: authenticatedReq, res) => {
+    try {
+        const { id: userId } = req.user as User
+        const { success, error, data } = onrampSchema.safeParse(req.body)
+
+        if (error) {
+            const errors = error.issues.map((err) => {
+                return { message: err.message }
+            })
+            await handleRes(res, 400, {}, errors)
             return;
         }
 
-        const decoded = jwt.decode(authToken) as JwtPayload
-
-
-        if (!decoded) {
-            const error = {
-                message: "User not found in the decoded token."
+        let inrBalance = await prisma.inrBalance.create({
+            data: {
+                available: data?.amount,
+                user: {
+                    connect: {
+                        id: userId
+                    }
+                }
             }
+        })
 
-            await handleRes(res, 400, {}, [error])
-            return
-        }
-
-
-        await handleRes(res, 200, decoded)
-
-
+        await handleRes(res, 200, inrBalance)
     } catch (error) {
         const errorMessage = getErrorMessage(error)
         await handleRes(res, 500, {}, [{ message: errorMessage }])

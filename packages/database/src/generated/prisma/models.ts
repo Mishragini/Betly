@@ -10,5 +10,8 @@
  */
 export type * from './models/User'
 export type * from './models/InrBalance'
-export type * from './models/Balance'
+export type * from './models/Order'
+export type * from './models/Category'
+export type * from './models/Market'
+export type * from './models/StockBalance'
 export type * from './commonInputTypes'

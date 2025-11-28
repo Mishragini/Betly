@@ -3,6 +3,7 @@ import cors from "cors"
 import { PORT } from "./utils/config"
 import userRouter from "./routes/user"
 import cookieParser from "cookie-parser";
+import { marketRouter } from "./routes/market";
 
 
 const app = express()
@@ -15,7 +16,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/user", userRouter)
-
+app.use("/market", marketRouter)
 
 app.listen(PORT, () => {
     console.log(`Api server on ${PORT}`)

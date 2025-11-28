@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.0.1",
   "engineVersion": "f09f2815f091dbba658cdcd2264306d88bb5bda6",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id       String   @id @default(uuid())\n  email    String   @unique\n  password String\n  balance  Balance?\n}\n\nmodel InrBalance {\n  id        String  @id @default(uuid())\n  locked    Int\n  available Int\n  balance   Balance @relation(fields: [balanceId], references: [id])\n  balanceId String  @unique\n}\n\nmodel Balance {\n  id         String      @id @default(uuid())\n  inrBalance InrBalance?\n  userId     String      @unique\n  user       User        @relation(fields: [userId], references: [id])\n}\n",
+  "inlineSchema": "// Prisma Schema\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum Side {\n  yes\n  no\n}\n\nenum Role {\n  user\n  admin\n}\n\nenum OrderType {\n  buy\n  sell\n}\n\nmodel User {\n  id            String         @id @default(uuid())\n  email         String         @unique\n  password      String\n  role          Role\n  inrBalance    InrBalance?\n  stockBalances StockBalance[]\n  markets       Market[]\n  orders        Order[]\n}\n\nmodel InrBalance {\n  id        String @id @default(uuid())\n  locked    Int    @default(0)\n  available Int\n  userId    String @unique\n  user      User   @relation(fields: [userId], references: [id])\n}\n\nmodel Order {\n  id       String    @id @default(uuid())\n  side     Side\n  type     OrderType\n  price    Int\n  quantity Int\n  filled   Int\n  userId   String\n  user     User      @relation(fields: [userId], references: [id])\n  marketId String\n  market   Market    @relation(fields: [marketId], references: [id])\n}\n\nmodel Category {\n  id       String   @id @default(uuid())\n  name     String   @unique\n  imageUrl String\n  markets  Market[]\n}\n\nmodel Market {\n  id            String         @id @default(uuid())\n  title         String\n  description   String\n  sourceOfTruth String\n  endDateTime   DateTime\n  imageUrl      String\n  createdById   String\n  createdBy     User           @relation(fields: [createdById], references: [id])\n  categoryId    String\n  category      Category       @relation(fields: [categoryId], references: [id])\n  orders        Order[]\n  stockBalances StockBalance[]\n}\n\nmodel StockBalance {\n  id        String @id @default(uuid())\n  side      Side\n  available Int\n  locked    Int    @default(0)\n  userId    String\n  user      User   @relation(fields: [userId], references: [id])\n  marketId  String\n  market    Market @relation(fields: [marketId], references: [id])\n\n  @@unique([userId, side, marketId])\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"balance\",\"kind\":\"object\",\"type\":\"Balance\",\"relationName\":\"BalanceToUser\"}],\"dbName\":null},\"InrBalance\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"locked\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"available\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"balance\",\"kind\":\"object\",\"type\":\"Balance\",\"relationName\":\"BalanceToInrBalance\"},{\"name\":\"balanceId\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"Balance\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"inrBalance\",\"kind\":\"object\",\"type\":\"InrBalance\",\"relationName\":\"BalanceToInrBalance\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"BalanceToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"Role\"},{\"name\":\"inrBalance\",\"kind\":\"object\",\"type\":\"InrBalance\",\"relationName\":\"InrBalanceToUser\"},{\"name\":\"stockBalances\",\"kind\":\"object\",\"type\":\"StockBalance\",\"relationName\":\"StockBalanceToUser\"},{\"name\":\"markets\",\"kind\":\"object\",\"type\":\"Market\",\"relationName\":\"MarketToUser\"},{\"name\":\"orders\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"OrderToUser\"}],\"dbName\":null},\"InrBalance\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"locked\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"available\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"InrBalanceToUser\"}],\"dbName\":null},\"Order\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"side\",\"kind\":\"enum\",\"type\":\"Side\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"OrderType\"},{\"name\":\"price\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"quantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"filled\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"OrderToUser\"},{\"name\":\"marketId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"market\",\"kind\":\"object\",\"type\":\"Market\",\"relationName\":\"MarketToOrder\"}],\"dbName\":null},\"Category\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"markets\",\"kind\":\"object\",\"type\":\"Market\",\"relationName\":\"CategoryToMarket\"}],\"dbName\":null},\"Market\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sourceOfTruth\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"endDateTime\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdById\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdBy\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"MarketToUser\"},{\"name\":\"categoryId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"object\",\"type\":\"Category\",\"relationName\":\"CategoryToMarket\"},{\"name\":\"orders\",\"kind\":\"object\",\"type\":\"Order\",\"relationName\":\"MarketToOrder\"},{\"name\":\"stockBalances\",\"kind\":\"object\",\"type\":\"StockBalance\",\"relationName\":\"MarketToStockBalance\"}],\"dbName\":null},\"StockBalance\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"side\",\"kind\":\"enum\",\"type\":\"Side\"},{\"name\":\"available\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"locked\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"StockBalanceToUser\"},{\"name\":\"marketId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"market\",\"kind\":\"object\",\"type\":\"Market\",\"relationName\":\"MarketToStockBalance\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -195,14 +195,44 @@ export interface PrismaClient<
   get inrBalance(): Prisma.InrBalanceDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.balance`: Exposes CRUD operations for the **Balance** model.
+   * `prisma.order`: Exposes CRUD operations for the **Order** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Balances
-    * const balances = await prisma.balance.findMany()
+    * // Fetch zero or more Orders
+    * const orders = await prisma.order.findMany()
     * ```
     */
-  get balance(): Prisma.BalanceDelegate<ExtArgs, { omit: OmitOpts }>;
+  get order(): Prisma.OrderDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.category`: Exposes CRUD operations for the **Category** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Categories
+    * const categories = await prisma.category.findMany()
+    * ```
+    */
+  get category(): Prisma.CategoryDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.market`: Exposes CRUD operations for the **Market** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Markets
+    * const markets = await prisma.market.findMany()
+    * ```
+    */
+  get market(): Prisma.MarketDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.stockBalance`: Exposes CRUD operations for the **StockBalance** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StockBalances
+    * const stockBalances = await prisma.stockBalance.findMany()
+    * ```
+    */
+  get stockBalance(): Prisma.StockBalanceDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {

@@ -28,18 +28,21 @@ export type UserMinAggregateOutputType = {
   id: string | null
   email: string | null
   password: string | null
+  role: $Enums.Role | null
 }
 
 export type UserMaxAggregateOutputType = {
   id: string | null
   email: string | null
   password: string | null
+  role: $Enums.Role | null
 }
 
 export type UserCountAggregateOutputType = {
   id: number
   email: number
   password: number
+  role: number
   _all: number
 }
 
@@ -48,18 +51,21 @@ export type UserMinAggregateInputType = {
   id?: true
   email?: true
   password?: true
+  role?: true
 }
 
 export type UserMaxAggregateInputType = {
   id?: true
   email?: true
   password?: true
+  role?: true
 }
 
 export type UserCountAggregateInputType = {
   id?: true
   email?: true
   password?: true
+  role?: true
   _all?: true
 }
 
@@ -139,6 +145,7 @@ export type UserGroupByOutputType = {
   id: string
   email: string
   password: string
+  role: $Enums.Role
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -166,14 +173,22 @@ export type UserWhereInput = {
   id?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringFilter<"User"> | string
-  balance?: Prisma.XOR<Prisma.BalanceNullableScalarRelationFilter, Prisma.BalanceWhereInput> | null
+  role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  inrBalance?: Prisma.XOR<Prisma.InrBalanceNullableScalarRelationFilter, Prisma.InrBalanceWhereInput> | null
+  stockBalances?: Prisma.StockBalanceListRelationFilter
+  markets?: Prisma.MarketListRelationFilter
+  orders?: Prisma.OrderListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
-  balance?: Prisma.BalanceOrderByWithRelationInput
+  role?: Prisma.SortOrder
+  inrBalance?: Prisma.InrBalanceOrderByWithRelationInput
+  stockBalances?: Prisma.StockBalanceOrderByRelationAggregateInput
+  markets?: Prisma.MarketOrderByRelationAggregateInput
+  orders?: Prisma.OrderOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -183,13 +198,18 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   password?: Prisma.StringFilter<"User"> | string
-  balance?: Prisma.XOR<Prisma.BalanceNullableScalarRelationFilter, Prisma.BalanceWhereInput> | null
+  role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  inrBalance?: Prisma.XOR<Prisma.InrBalanceNullableScalarRelationFilter, Prisma.InrBalanceWhereInput> | null
+  stockBalances?: Prisma.StockBalanceListRelationFilter
+  markets?: Prisma.MarketListRelationFilter
+  orders?: Prisma.OrderListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -202,70 +222,93 @@ export type UserScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   password?: Prisma.StringWithAggregatesFilter<"User"> | string
+  role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
 }
 
 export type UserCreateInput = {
   id?: string
   email: string
   password: string
-  balance?: Prisma.BalanceCreateNestedOneWithoutUserInput
+  role: $Enums.Role
+  inrBalance?: Prisma.InrBalanceCreateNestedOneWithoutUserInput
+  stockBalances?: Prisma.StockBalanceCreateNestedManyWithoutUserInput
+  markets?: Prisma.MarketCreateNestedManyWithoutCreatedByInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
   id?: string
   email: string
   password: string
-  balance?: Prisma.BalanceUncheckedCreateNestedOneWithoutUserInput
+  role: $Enums.Role
+  inrBalance?: Prisma.InrBalanceUncheckedCreateNestedOneWithoutUserInput
+  stockBalances?: Prisma.StockBalanceUncheckedCreateNestedManyWithoutUserInput
+  markets?: Prisma.MarketUncheckedCreateNestedManyWithoutCreatedByInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  balance?: Prisma.BalanceUpdateOneWithoutUserNestedInput
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  inrBalance?: Prisma.InrBalanceUpdateOneWithoutUserNestedInput
+  stockBalances?: Prisma.StockBalanceUpdateManyWithoutUserNestedInput
+  markets?: Prisma.MarketUpdateManyWithoutCreatedByNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
-  balance?: Prisma.BalanceUncheckedUpdateOneWithoutUserNestedInput
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  inrBalance?: Prisma.InrBalanceUncheckedUpdateOneWithoutUserNestedInput
+  stockBalances?: Prisma.StockBalanceUncheckedUpdateManyWithoutUserNestedInput
+  markets?: Prisma.MarketUncheckedUpdateManyWithoutCreatedByNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
   id?: string
   email: string
   password: string
+  role: $Enums.Role
 }
 
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
 }
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
 }
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  role?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  role?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
+  role?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -277,90 +320,379 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
-export type UserCreateNestedOneWithoutBalanceInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutBalanceInput, Prisma.UserUncheckedCreateWithoutBalanceInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBalanceInput
+export type EnumRoleFieldUpdateOperationsInput = {
+  set?: $Enums.Role
+}
+
+export type UserCreateNestedOneWithoutInrBalanceInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInrBalanceInput, Prisma.UserUncheckedCreateWithoutInrBalanceInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInrBalanceInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutBalanceNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutBalanceInput, Prisma.UserUncheckedCreateWithoutBalanceInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBalanceInput
-  upsert?: Prisma.UserUpsertWithoutBalanceInput
+export type UserUpdateOneRequiredWithoutInrBalanceNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInrBalanceInput, Prisma.UserUncheckedCreateWithoutInrBalanceInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInrBalanceInput
+  upsert?: Prisma.UserUpsertWithoutInrBalanceInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBalanceInput, Prisma.UserUpdateWithoutBalanceInput>, Prisma.UserUncheckedUpdateWithoutBalanceInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInrBalanceInput, Prisma.UserUpdateWithoutInrBalanceInput>, Prisma.UserUncheckedUpdateWithoutInrBalanceInput>
 }
 
-export type UserCreateWithoutBalanceInput = {
+export type UserCreateNestedOneWithoutOrdersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersInput
+  upsert?: Prisma.UserUpsertWithoutOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrdersInput, Prisma.UserUpdateWithoutOrdersInput>, Prisma.UserUncheckedUpdateWithoutOrdersInput>
+}
+
+export type UserCreateNestedOneWithoutMarketsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMarketsInput, Prisma.UserUncheckedCreateWithoutMarketsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMarketsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutMarketsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMarketsInput, Prisma.UserUncheckedCreateWithoutMarketsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMarketsInput
+  upsert?: Prisma.UserUpsertWithoutMarketsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMarketsInput, Prisma.UserUpdateWithoutMarketsInput>, Prisma.UserUncheckedUpdateWithoutMarketsInput>
+}
+
+export type UserCreateNestedOneWithoutStockBalancesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStockBalancesInput, Prisma.UserUncheckedCreateWithoutStockBalancesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStockBalancesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutStockBalancesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStockBalancesInput, Prisma.UserUncheckedCreateWithoutStockBalancesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStockBalancesInput
+  upsert?: Prisma.UserUpsertWithoutStockBalancesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStockBalancesInput, Prisma.UserUpdateWithoutStockBalancesInput>, Prisma.UserUncheckedUpdateWithoutStockBalancesInput>
+}
+
+export type UserCreateWithoutInrBalanceInput = {
   id?: string
   email: string
   password: string
+  role: $Enums.Role
+  stockBalances?: Prisma.StockBalanceCreateNestedManyWithoutUserInput
+  markets?: Prisma.MarketCreateNestedManyWithoutCreatedByInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutBalanceInput = {
+export type UserUncheckedCreateWithoutInrBalanceInput = {
   id?: string
   email: string
   password: string
+  role: $Enums.Role
+  stockBalances?: Prisma.StockBalanceUncheckedCreateNestedManyWithoutUserInput
+  markets?: Prisma.MarketUncheckedCreateNestedManyWithoutCreatedByInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutBalanceInput = {
+export type UserCreateOrConnectWithoutInrBalanceInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutBalanceInput, Prisma.UserUncheckedCreateWithoutBalanceInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInrBalanceInput, Prisma.UserUncheckedCreateWithoutInrBalanceInput>
 }
 
-export type UserUpsertWithoutBalanceInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutBalanceInput, Prisma.UserUncheckedUpdateWithoutBalanceInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutBalanceInput, Prisma.UserUncheckedCreateWithoutBalanceInput>
+export type UserUpsertWithoutInrBalanceInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutInrBalanceInput, Prisma.UserUncheckedUpdateWithoutInrBalanceInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInrBalanceInput, Prisma.UserUncheckedCreateWithoutInrBalanceInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutBalanceInput = {
+export type UserUpdateToOneWithWhereWithoutInrBalanceInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutBalanceInput, Prisma.UserUncheckedUpdateWithoutBalanceInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutInrBalanceInput, Prisma.UserUncheckedUpdateWithoutInrBalanceInput>
 }
 
-export type UserUpdateWithoutBalanceInput = {
+export type UserUpdateWithoutInrBalanceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stockBalances?: Prisma.StockBalanceUpdateManyWithoutUserNestedInput
+  markets?: Prisma.MarketUpdateManyWithoutCreatedByNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutBalanceInput = {
+export type UserUncheckedUpdateWithoutInrBalanceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  stockBalances?: Prisma.StockBalanceUncheckedUpdateManyWithoutUserNestedInput
+  markets?: Prisma.MarketUncheckedUpdateManyWithoutCreatedByNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
 }
 
+export type UserCreateWithoutOrdersInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  inrBalance?: Prisma.InrBalanceCreateNestedOneWithoutUserInput
+  stockBalances?: Prisma.StockBalanceCreateNestedManyWithoutUserInput
+  markets?: Prisma.MarketCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutOrdersInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  inrBalance?: Prisma.InrBalanceUncheckedCreateNestedOneWithoutUserInput
+  stockBalances?: Prisma.StockBalanceUncheckedCreateNestedManyWithoutUserInput
+  markets?: Prisma.MarketUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutOrdersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
+}
+
+export type UserUpsertWithoutOrdersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOrdersInput, Prisma.UserUncheckedUpdateWithoutOrdersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutOrdersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOrdersInput, Prisma.UserUncheckedUpdateWithoutOrdersInput>
+}
+
+export type UserUpdateWithoutOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  inrBalance?: Prisma.InrBalanceUpdateOneWithoutUserNestedInput
+  stockBalances?: Prisma.StockBalanceUpdateManyWithoutUserNestedInput
+  markets?: Prisma.MarketUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  inrBalance?: Prisma.InrBalanceUncheckedUpdateOneWithoutUserNestedInput
+  stockBalances?: Prisma.StockBalanceUncheckedUpdateManyWithoutUserNestedInput
+  markets?: Prisma.MarketUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutMarketsInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  inrBalance?: Prisma.InrBalanceCreateNestedOneWithoutUserInput
+  stockBalances?: Prisma.StockBalanceCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutMarketsInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  inrBalance?: Prisma.InrBalanceUncheckedCreateNestedOneWithoutUserInput
+  stockBalances?: Prisma.StockBalanceUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutMarketsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMarketsInput, Prisma.UserUncheckedCreateWithoutMarketsInput>
+}
+
+export type UserUpsertWithoutMarketsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMarketsInput, Prisma.UserUncheckedUpdateWithoutMarketsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMarketsInput, Prisma.UserUncheckedCreateWithoutMarketsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMarketsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMarketsInput, Prisma.UserUncheckedUpdateWithoutMarketsInput>
+}
+
+export type UserUpdateWithoutMarketsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  inrBalance?: Prisma.InrBalanceUpdateOneWithoutUserNestedInput
+  stockBalances?: Prisma.StockBalanceUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMarketsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  inrBalance?: Prisma.InrBalanceUncheckedUpdateOneWithoutUserNestedInput
+  stockBalances?: Prisma.StockBalanceUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutStockBalancesInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  inrBalance?: Prisma.InrBalanceCreateNestedOneWithoutUserInput
+  markets?: Prisma.MarketCreateNestedManyWithoutCreatedByInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutStockBalancesInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  inrBalance?: Prisma.InrBalanceUncheckedCreateNestedOneWithoutUserInput
+  markets?: Prisma.MarketUncheckedCreateNestedManyWithoutCreatedByInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutStockBalancesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutStockBalancesInput, Prisma.UserUncheckedCreateWithoutStockBalancesInput>
+}
+
+export type UserUpsertWithoutStockBalancesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutStockBalancesInput, Prisma.UserUncheckedUpdateWithoutStockBalancesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStockBalancesInput, Prisma.UserUncheckedCreateWithoutStockBalancesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutStockBalancesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutStockBalancesInput, Prisma.UserUncheckedUpdateWithoutStockBalancesInput>
+}
+
+export type UserUpdateWithoutStockBalancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  inrBalance?: Prisma.InrBalanceUpdateOneWithoutUserNestedInput
+  markets?: Prisma.MarketUpdateManyWithoutCreatedByNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutStockBalancesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  inrBalance?: Prisma.InrBalanceUncheckedUpdateOneWithoutUserNestedInput
+  markets?: Prisma.MarketUncheckedUpdateManyWithoutCreatedByNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+}
+
+
+/**
+ * Count Type UserCountOutputType
+ */
+
+export type UserCountOutputType = {
+  stockBalances: number
+  markets: number
+  orders: number
+}
+
+export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  stockBalances?: boolean | UserCountOutputTypeCountStockBalancesArgs
+  markets?: boolean | UserCountOutputTypeCountMarketsArgs
+  orders?: boolean | UserCountOutputTypeCountOrdersArgs
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserCountOutputType
+   */
+  select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountStockBalancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StockBalanceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountMarketsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MarketWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderWhereInput
+}
 
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
   password?: boolean
-  balance?: boolean | Prisma.User$balanceArgs<ExtArgs>
+  role?: boolean
+  inrBalance?: boolean | Prisma.User$inrBalanceArgs<ExtArgs>
+  stockBalances?: boolean | Prisma.User$stockBalancesArgs<ExtArgs>
+  markets?: boolean | Prisma.User$marketsArgs<ExtArgs>
+  orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
   password?: boolean
+  role?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
   password?: boolean
+  role?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
   id?: boolean
   email?: boolean
   password?: boolean
+  role?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "role", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  balance?: boolean | Prisma.User$balanceArgs<ExtArgs>
+  inrBalance?: boolean | Prisma.User$inrBalanceArgs<ExtArgs>
+  stockBalances?: boolean | Prisma.User$stockBalancesArgs<ExtArgs>
+  markets?: boolean | Prisma.User$marketsArgs<ExtArgs>
+  orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -368,12 +700,16 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    balance: Prisma.$BalancePayload<ExtArgs> | null
+    inrBalance: Prisma.$InrBalancePayload<ExtArgs> | null
+    stockBalances: Prisma.$StockBalancePayload<ExtArgs>[]
+    markets: Prisma.$MarketPayload<ExtArgs>[]
+    orders: Prisma.$OrderPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     email: string
     password: string
+    role: $Enums.Role
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -768,7 +1104,10 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  balance<T extends Prisma.User$balanceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$balanceArgs<ExtArgs>>): Prisma.Prisma__BalanceClient<runtime.Types.Result.GetResult<Prisma.$BalancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  inrBalance<T extends Prisma.User$inrBalanceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$inrBalanceArgs<ExtArgs>>): Prisma.Prisma__InrBalanceClient<runtime.Types.Result.GetResult<Prisma.$InrBalancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  stockBalances<T extends Prisma.User$stockBalancesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$stockBalancesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StockBalancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  markets<T extends Prisma.User$marketsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$marketsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MarketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  orders<T extends Prisma.User$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -801,6 +1140,7 @@ export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
+  readonly role: Prisma.FieldRef<"User", 'Role'>
 }
     
 
@@ -1189,22 +1529,94 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.balance
+ * User.inrBalance
  */
-export type User$balanceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$inrBalanceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Balance
+   * Select specific fields to fetch from the InrBalance
    */
-  select?: Prisma.BalanceSelect<ExtArgs> | null
+  select?: Prisma.InrBalanceSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Balance
+   * Omit specific fields from the InrBalance
    */
-  omit?: Prisma.BalanceOmit<ExtArgs> | null
+  omit?: Prisma.InrBalanceOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.BalanceInclude<ExtArgs> | null
-  where?: Prisma.BalanceWhereInput
+  include?: Prisma.InrBalanceInclude<ExtArgs> | null
+  where?: Prisma.InrBalanceWhereInput
+}
+
+/**
+ * User.stockBalances
+ */
+export type User$stockBalancesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StockBalance
+   */
+  select?: Prisma.StockBalanceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StockBalance
+   */
+  omit?: Prisma.StockBalanceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StockBalanceInclude<ExtArgs> | null
+  where?: Prisma.StockBalanceWhereInput
+  orderBy?: Prisma.StockBalanceOrderByWithRelationInput | Prisma.StockBalanceOrderByWithRelationInput[]
+  cursor?: Prisma.StockBalanceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StockBalanceScalarFieldEnum | Prisma.StockBalanceScalarFieldEnum[]
+}
+
+/**
+ * User.markets
+ */
+export type User$marketsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Market
+   */
+  select?: Prisma.MarketSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Market
+   */
+  omit?: Prisma.MarketOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MarketInclude<ExtArgs> | null
+  where?: Prisma.MarketWhereInput
+  orderBy?: Prisma.MarketOrderByWithRelationInput | Prisma.MarketOrderByWithRelationInput[]
+  cursor?: Prisma.MarketWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MarketScalarFieldEnum | Prisma.MarketScalarFieldEnum[]
+}
+
+/**
+ * User.orders
+ */
+export type User$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
 }
 
 /**
